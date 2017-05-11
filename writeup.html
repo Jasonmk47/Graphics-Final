@@ -1,0 +1,77 @@
+<head>
+    <title> COS426 Assignment 4 &mdash; Animation &mdash; Writeup</title>
+    <link href="css/style.css" type="text/css" rel="stylesheet"/>
+</head>
+
+<body>
+    <script src="js/student.js"> </script>
+    <script src="js/writeup.js"> </script>
+    <div class="top">
+    <div class="main_div">
+
+        <h1> <div class=assignment>COS426 Assignment 4</div>Animation &mdash; Writeup</h1>
+        <div class='selectable'>
+        <h2 id='student'></h2>
+        
+        Features Implemented:
+<ul>
+<li>(1.0) <a href='#Euler'>Euler</a></li>
+<li>(1.0) <a href='#Sphere+source'>Sphere source</a></li>
+<li>(1.0) <a href='#Animated+mesh'>Animated mesh</a></li>
+<li>(1.0) <a href='#Uniform+distribution'>Uniform distribution</a></li>
+<li>(1.0) <a href='#Ground+plane'>Ground plane</a></li>
+<li>(1.0) <a href='#Sphere+collision'>Sphere collision</a></li>
+<li>(2.0) <a href='#Spring+system'>Spring system</a></li>
+<li>(3.0) <a href='#Your+system'>Your system</a></li>
+<li>(1.0) <a href='#Rendering'>Rendering</a></li>
+<li>(1.0) <a href='#Art'>Art</a></li>
+        </ul></div>
+
+<p><hr><p><a name='Euler'></a><h2>Euler</h2><p><hr><p>
+We added gravity (multiplied by delta_t) to velocity. We also added attractors by adding the vector from the attractor center and the particle (to direct the particle toward the attractor) and scaling by the inverse square of the distance as suggested on the example slide.
+
+<p><hr><p><a name='Sphere+source'></a><h2>Sphere source</h2><p><hr><p>
+For sphere source, we used the algorithm provided in the lecture slides for selecting a random position on surface of sphere (slide 21), calculating the z, phi, and d as provided to get the x/y/z coordinates for the position on the sphere to set in the initializePositions() function.
+
+<p><hr><p><a name='Animated+mesh'></a><h2>Animated mesh</h2><p><hr><p>
+For animated mesh source, we used Math.random() to multiply (and floor) the length of the array of faces to select a random face. Afterwards, we found a random point by taking two Math.random()'s, checking if they sum to greater than 1 (if they do, set them to 1 subtracted by each), and using these factors to multiply the the edges (starting from an arbitrary v1) to scale to get a point within the triangle.
+
+<p><hr><p><a name='Uniform+distribution'></a><h2>Uniform distribution</h2><p><hr><p>
+For the uniform distribution, we calculated the area of all faces by creating three.js triangles with them and calling their area function. Then, we divided all areas by the minimum area of the faces (rounding when applicable) to get a scaling of each area relative to a "unit size" (rounding when applicable). We used this new weight to create a new ray, filling it with the amount of units each face amounted to with the coreresponding index (e.g. if index 1 of the faces array had an area that was twice the minimum area, then 1 would go into the array twice). Then, to get the face, we similarly used Math.random() to multiply and floor the length of the array to get a random index, and retrieve the index of the original face. Afterwards, we found the point on the face the same way as listed above in "animated mesh."
+
+<p><hr><p><a name='Ground+plane'></a><h2>Ground plane</h2><p><hr><p>
+We calculate the intersection geometrically. For "sink," if the position of a particle is beneath the plane, we kill the particle. For "bounce," if the position of a particle is beneath the plane and its velocity is in the direction of the plane (negative y component), then we negate and multiply the y component by the damping, so that the particle's direction is reflected off the plane.
+
+<p><hr><p><a name='Sphere+collision'></a><h2>Sphere collision</h2><p><hr><p>
+We calculated the intersection geometrically. If the position of a particle is within the sphere, we set the velocity to 0 (because damping = 0) and push the position to the surface of the sphere.
+
+<p><hr><p><a name='Spring+system'></a><h2>Spring system</h2><p><hr><p>
+We calculated the force of Hooke's Law using the equations from the lecture slide, using damping = 0. We then added the force of Hooke's Law from the points left, right, up, and down of the given point to find the total force.
+
+<p><hr><p><a name='Your+system'></a><h2>Your system</h2><p><hr><p>
+We created two systems: <br/>
+mySystem-bugs: Swarm of flies around a piece of fruit. Implemented using multiply attractors and a sphereSink collision that kills particles when they are inside the sphere.<br>
+mySystem-fireworks: Used the behavior of particle systems maxParticles <= particlesFreq (a bit hack-y with regard to hardware rendering, as the effect gets more interesting with timing desyncs after watching for a while) to create a fireworks effect, with bursts selecting from a random 3-color palette from the rainbow and having a random starting position close to the center in the direction of randomly pre-calculated rays, which get refreshed with every new "burst."<br>
+
+<p><hr><p><a name='Rendering'></a><h2>Rendering</h2><p><hr><p>
+For the rendering, we changed a few things to create some visual effects. For the animated horse, we made the initialized color randomly draw from a rainbow palette to try and create a "magical" effect from the particles emanating from the moving horse. For all other particles systems, we took advantage of this difference in color to control the default-colored particles and make the opacity scale (logarithmically) with the lifetime, relative to the maximum lifetime (7) to make particles fade out towards their "death."
+
+<p><hr><p><a name='Art'></a><h2>Art</h2><p><hr><p>
+"Ghostrider" (before scaling the particles with mesh.scale)
+<br><img src='results/ghostrider.png'>
+<br>
+"Rainbow horse"
+<br><img src='results/rainbow_horse.png'>
+<br>
+"Bugs swarming"
+<br><img src='results/bugs.png'>
+<br>
+"Fireworks!"
+<br><img src='results/fireworks3.png'>
+<br><img src='results/fireworks5.png'>
+<br><img src='results/fireworks6.png'>
+
+    </div>
+    </div>
+</body>
+</html>
