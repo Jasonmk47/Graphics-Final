@@ -9,7 +9,7 @@ Gui.windowSizes = [ "full","400x400","600x400","600x600","800x600","800x800" ];
 
 Gui.blendTypes = [ "Normal", "Additive" ];
 
-Gui.particleSystems = [ "basic" ];
+Gui.particleSystems = [ "splash" ];
 
 Gui.textures = [ "blank", "base", "fire", "smoke", "spark", "sphere", "smoke" ];
 
@@ -73,7 +73,7 @@ Gui.init = function ( meshChangeCallback, controlsChangeCallback, displayChangeC
     var gc = {};
     gc.stopTime  = gui.add( Gui.values, 'stopTime' ).name( "Pause" );
     gc.reset     = gui.add( Gui.values, 'reset' ).name("Reset");
-    gc.systems   = gui.add( Gui.values, 'systems', Gui.particleSystems ).name("ParticleSystems");
+    // gc.systems   = gui.add( Gui.values, 'systems', Gui.particleSystems ).name("ParticleSystems");
 
     var disp = gui.addFolder( "DISPLAY OPTIONS");
     gc.blends    = disp.add( Gui.values, 'blendTypes', Gui.blendTypes ).name("Blending Types");
@@ -112,10 +112,10 @@ Gui.init = function ( meshChangeCallback, controlsChangeCallback, displayChangeC
         }
     } );
 
-    gc.systems.onChange( function(value) {
-        var settings = SystemSettings[value];
-        Main.particleSystemChangeCallback ( settings );
-    } );
+    // gc.systems.onChange( function(value) {
+    //     var settings = SystemSettings[value];
+    //     Main.particleSystemChangeCallback ( settings );
+    // } );
 
     gc.depthTest.onChange( function( value ) {
         var emitters = ParticleEngine.getEmitters();

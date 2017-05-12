@@ -27,15 +27,12 @@ Batch.particleSystemChangeCallback = function ( InputSettings ) {
         initialize:    initializer,                  // initializer object
         update:        updater,                      // updater object
         material:      InputSettings.particleMaterial,
-        cloth:         InputSettings.cloth,
         width:         InputSettings.width,
         height:        InputSettings.height,
     } );
 
-    // If we are not dealing with cloth, lets sort particles
-    // if ( !InputSettings.cloth ) {
-        emitter.enableSorting( Batch.cmds.sorting );
-    // }
+    // Sort particles
+    emitter.enableSorting( Batch.cmds.sorting );
 
     ParticleEngine.addEmitter ( emitter );
 

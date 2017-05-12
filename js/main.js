@@ -16,12 +16,6 @@ Main.particleSystemChangeCallback = function ( InputSettings ) {
     // Get rid of old models
     Scene.removeObjects();
 
-    // If we specified animated model, then lets load it first
-    if ( InputSettings.animatedModelName ) {
-        var loader = new THREE.JSONLoader( true );
-        loader.load( InputSettings.animatedModelName, InputSettings.animationLoadFunction );
-    }
-
     // Create new system
     var initializer = new InputSettings.initializerFunction ( InputSettings.initializerSettings );
 
@@ -33,7 +27,6 @@ Main.particleSystemChangeCallback = function ( InputSettings ) {
         initialize:    initializer,                  // initializer object
         update:        updater,                      // updater object
         material:      InputSettings.particleMaterial,
-        cloth:         InputSettings.cloth,
         width:         InputSettings.width,
         height:        InputSettings.height,
     } );
@@ -62,7 +55,7 @@ window.onload = function() {
     Scene.create();
 
     // Add particle system
-    Main.particleSystemChangeCallback( SystemSettings.basic );
+    Main.particleSystemChangeCallback( SystemSettings.splash );
 
     Renderer.create( Scene, document.getElementById("canvas") );
 

@@ -36,7 +36,6 @@ Scene.setupLighting = function() {
 Scene.setupMaterials = function() {
     var default_mat = new THREE.MeshLambertMaterial( { color : 0x555555 } );
     Scene._materials.push( default_mat );
-
 };
 
 Scene.getDefaultMaterial = function() {
@@ -51,7 +50,6 @@ Scene.getMaterial = function( id ) {
 Scene.addMaterial = function( material ) {
     Scene._materials.push ( material );
 };
-
 
 // Objects
 Scene.addObject = function ( object ) {
@@ -71,7 +69,6 @@ Scene.removeObjects = function ( object ) {
             Scene._scene.remove( Scene._objects[i] );
         }
     }
-
     Scene._objects = [];
 }
 

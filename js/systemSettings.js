@@ -159,43 +159,54 @@ SystemSettings.fountainSink = {
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-// Attractor system
+// Splash system
 ////////////////////////////////////////////////////////////////////////////////
 
-SystemSettings.attractor = {
+SystemSettings.splash = {
 
     // Particle material
     particleMaterial : SystemSettings.standardMaterial,
 
     // Initialization
-    initializerFunction : SphereInitializer,
+    initializerFunction : SplashInitializer,
     initializerSettings : {
-        sphere:   new THREE.Vector4 ( 0.0, 0.0, 0.0, 5.0),
-        color:    new THREE.Vector4 ( 1.0, 1.0, 1.0, 1.0 ),
-        velocity: new THREE.Vector3 ( 0.0, 0.0, 0.0),
+        sphere:   new THREE.Vector4 ( 0.0, 30.0, 0.0, 1.0 ),
+        color:    new THREE.Vector4 ( 0.0, 0.0, 1.0, 1.0 ),
+        velocity: new THREE.Vector3 ( 0.0, -10.0, 0.0),
         lifetime: 7,
-        size:     6.0,
+        size:     5.0,
     },
 
     // Update
     updaterFunction : EulerUpdater,
     updaterSettings : {
         externalForces : {
-            gravity :     new THREE.Vector3( 0, 0, 0),
-            attractors : [ new THREE.Sphere( new THREE.Vector3(30.0, 30.0, 30.0), 15.0 ) ],
+            gravity :     new THREE.Vector3( 0, -20, 0),
+            attractors : [],
         },
-        collidables: {},
+        collidables: {
+            bounceSpheres : [ {sphere : new THREE.Vector4( 0, 0, 0, 10.0 ), damping : 0.5 }, 
+                            {sphere : new THREE.Vector4( -50, 0, 0, 10.0 ), damping : 0.5 },
+                            {sphere : new THREE.Vector4( 50, 0, 0, 10.0 ), damping : 0.5 } ],
+        },
     },
 
     // Scene
     maxParticles :  10000,
     particlesFreq : 1000,
     createScene : function () {
-        var sphere_geo = new THREE.SphereGeometry( 1.0, 32, 32 );
-        var phong      = new THREE.MeshPhongMaterial( {color: 0x444444, emissive:0x442222, side: THREE.DoubleSide } );
-        var sphere = new THREE.Mesh( sphere_geo, phong )
+        var sphere_geo = new THREE.SphereGeometry( 10, 10, 10 );
+        var phong      = new THREE.MeshPhongMaterial( {color: 0xffffff, emissive:0xffffee, side: THREE.DoubleSide } );
+        var sphere1 = new THREE.Mesh( sphere_geo, phong )
+        var sphere2 = new THREE.Mesh( sphere_geo, phong )
+        var sphere3 = new THREE.Mesh( sphere_geo, phong )
 
-        sphere.position.set (30.0, 30.0, 30.0);
-        Scene.addObject( sphere );
+        sphere1.position.set (-50.0, 0.0, 0.0);
+        sphere2.position.set (0.0, 0.0, 0.0);
+        sphere3.position.set (50.0, 0.0, 0.0);
+
+        Scene.addObject( sphere1 );
+        Scene.addObject( sphere2 );
+        Scene.addObject( sphere3 );
     },
 };

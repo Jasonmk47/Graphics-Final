@@ -48,7 +48,7 @@ Renderer.create = function( scene, canvas ) {
 
     // Create camera and setup controls
     Renderer._camera   = new THREE.PerspectiveCamera ( 55, Renderer._aspect, 0.01, 5000 );
-    Renderer._controls = new THREE.TrackballControls ( Renderer._camera, Renderer._renderer.domElement );
+    Renderer._controls = new THREE.OrbitControls ( Renderer._camera, Renderer._renderer.domElement );
     Renderer._camera.position.set( 0, 0, 200 );
 
 
