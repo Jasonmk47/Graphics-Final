@@ -6,7 +6,9 @@
     </head>
     <body>
         <h1>Welcome to the Web Audio API</h1>
-        <button id="pause-resume">Pause/Resume</button>
+        <input id="audio_file" type="file" accept="audio/*"></input>
+        <br>
+        <button id="pause_resume">Pause/Resume</button>
         <script>
             // initialize variables
             var context = new AudioContext();
@@ -99,7 +101,7 @@
                 isPlaying = true;
             }
 
-            $('#pause-resume').click(function () {
+            $('#pause_resume').click(function () {
                 if (isPlaying) pause();
                 else resume();
             });
