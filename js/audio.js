@@ -1,6 +1,6 @@
 // initialize variables
 var context;
-var request = new XMLHttpRequest();
+var request;
 var source;
 var processor;
 var analyser;
@@ -73,15 +73,12 @@ var colors = [ // every color is repeated (32 => 64)
     '#e1e885'
 ];
 var currentColor;
+var url = "../audio/weewoo.mp3"; // default
 
-request.open('GET', '../audio/weewoo.mp3', true);
-request.responseType = 'arraybuffer';
-request.send();
-// onload function
-request.onload = function () {
-    newSong(request.response);
-};
+// start default chain
+requester();
 
+// file reader
 audio_file.onchange = function() {
   var file = this.files[0];
   var reader = new FileReader();
@@ -92,6 +89,19 @@ audio_file.onchange = function() {
   };
 };
 
+// new request
+function requester() {
+    request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'arraybuffer';
+    request.send();
+    // onload function
+    request.onload = function () {
+        newSong(request.response);
+    };
+}
+
+// Web Audio API to create context/buffers and play audio
 function newSong(undecoded) {
     context = new AudioContext();
     context.decodeAudioData(undecoded, function (buffer) {
@@ -105,7 +115,9 @@ function newSong(undecoded) {
         // analyzer
         analyser = context.createAnalyser();
         analyser.fftSize = 128;
-        for (var i = 0; i < 64; i++) {
+
+        // populate/reset histogram
+        for (var i = 0; i < analyser.fftSize / 2; i++) {
             hist[i] = 0;
         }
         // connect nodes
@@ -113,28 +125,39 @@ function newSong(undecoded) {
         analyser.connect(processor);
         source.connect(context.destination);
         processor.connect(context.destination);
+        // function for processing frequency data
         processor.onaudioprocess = function(e) {
             freqArray = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(freqArray);
+            // find a random bin (weighted by frequencies' outputs)
             var randBin = chooseRandBin(freqArray);
             currentColor = colors[randBin];
+            // update histogram (for final output)
             hist[randBin] += 1;
             // console.log(currentColor);
         };
+        // play audio
         startAudio();
 
+        // function for when source finishes playing
         source.onended = function() {
             console.log(hist); // prints histogram when finished
         };
     });
 }
 
+// random bin selector for (frequency) array
 function chooseRandBin(arr) {
+    // sum of entire array
     var sum = 0;
     for (var i = 0; i < arr.length; i++) {
         sum += arr[i];
     }
+
+    // find random number within range of array sum
     var rand = Math.floor(Math.random() * sum) + 1;
+
+    // compare with running sum to select a weighted random index from array
     var partialSum = 0;
     for (var i = 0; i < arr.length; i++) {
         if (partialSum > rand) {
@@ -146,24 +169,28 @@ function chooseRandBin(arr) {
     }
 }
 
+// play audio (from beginning)
 function startAudio() {
     source.start(context.currentTime); // default starts at 0
     // source.start(0);
     isPlaying = true;
 }
 
+// pause helper
 function pauseAudio() {
     context.suspend();
     // source.disconnect();
     isPlaying = false;
 }
 
+// resume helper
 function resumeAudio() {
     context.resume();
     // source.connect(analyser);
     isPlaying = true;
 }
 
+// pause/resume button click event
 $('#pause_resume').click(function () {
     if (isPlaying) pauseAudio();
     else resumeAudio();
