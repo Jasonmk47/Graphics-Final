@@ -2,30 +2,39 @@
 <html>
     <head>
         <title>Web Audio API</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
     <body>
         <h1>Welcome to the Web Audio API</h1>
+        <button id="pause-resume">Pause/Resume</button>
         <script>
-            // Create the audio context
+            // initialize variables
             var context = new AudioContext();
             var request = new XMLHttpRequest();
+            var source;
+            var processor;
+            var analyser;
+            var isPlaying = false;
  
-            request.open('GET', 'animalrights.mp3', true);
+            request.open('GET', 'weewoo.mp3', true);
             request.responseType = 'arraybuffer';
 
+            request.send();
+
+            // onload function
             request.onload = function () {
                 var undecodedAudio = request.response;
             
                 context.decodeAudioData(undecodedAudio, function (buffer) {
                     // create nodes
                     // source
-                    var source = context.createBufferSource();
+                    source = context.createBufferSource();
                     source.buffer = buffer;
                     // js event processor
-                    var processor = context.createScriptProcessor(2048);
+                    processor = context.createScriptProcessor(2048);
                     processor.buffer = buffer;
                     // analyzer
-                    var analyser = context.createAnalyser();
+                    analyser = context.createAnalyser();
                     analyser.fftSize = 128;
 
                     // connect nodes
@@ -37,16 +46,55 @@
                     processor.onaudioprocess = function(e) {
                         freqArray = new Uint8Array(analyser.frequencyBinCount);
                         analyser.getByteFrequencyData(freqArray);
-                        console.log(freqArray);
-                        console.log(freqArray.length);
+                        var randBin = chooseRandBin(freqArray) + 1; // 1-64 instead of 0-63
+                        console.log(randBin);
                     };
 
-                    // Schedule the song to start playing at time:0
-                    // source.start(0);
+                    start();
                 });
             };
 
-            request.send();
+            function chooseRandBin(arr) {
+                var sum = 0;
+                for (var i = 0; i < arr.length; i++) {
+                    sum += arr[i];
+                }
+
+                var rand = Math.floor(Math.random() * sum) + 1;
+
+                var partialSum = 0;
+                for (var i = 0; i < arr.length; i++) {
+                    if (partialSum > rand) {
+                        return i - 1;
+                    }
+                    else {
+                        partialSum += arr[i];
+                    }
+                }
+            }
+
+            function start() {
+                source.start(context.currentTime); // default starts at 0
+                // source.start(0);
+                isPlaying = true;
+            }
+
+            function pause() {
+                context.suspend();
+                // source.disconnect();
+                isPlaying = false;
+            }
+
+            function resume() {
+                context.resume();
+                // source.connect(analyser);
+                isPlaying = true;
+            }
+
+            $('#pause-resume').click(function () {
+                if (isPlaying) pause();
+                else resume();
+            });
         </script>
     </body>
 </html> 
