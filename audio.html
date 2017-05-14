@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Web Audio API</title>
+    </head>
+    <body>
+        <h1>Welcome to the Web Audio API</h1>
+        <script>
+            // Create the audio context
+            var context = new AudioContext();
+            var request = new XMLHttpRequest();
+ 
+            request.open('GET', 'animalrights.mp3', true);
+            request.responseType = 'arraybuffer';
+
+            request.onload = function () {
+                var undecodedAudio = request.response;
+            
+                context.decodeAudioData(undecodedAudio, function (buffer) {
+                    var offlineContext = new OfflineAudioContext(1, buffer.length, buffer.sampleRate);
+
+                    // create nodes
+                    var source = offlineContext.createBufferSource();
+                    source.buffer = buffer;
+
+                    var filter = offlineContext.createBiquadFilter();
+                    filter.type = "lowpass";
+
+                    var analyser = offlineContext.createAnalyser();
+                    
+                    // connect nodes
+                    source.connect(filter);
+                    filter.connect(analyser);
+                    analyser.connect(offlineContext.destination);
+
+                    var frequencyData = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(frequencyData);
+                    console.log(frequencyData);
+
+                    // Schedule the song to start playing at time:0
+                    source.start(0);
+
+                    offlineContext.startRendering();
+                    offlineContext.oncomplete = function(e) {
+                      var filteredBuffer = e.renderedBuffer;
+                      var data = filteredBuffer.getChannelData(0);
+                    //   data = downsample(data, 300);
+                    //   data = normalize(data);
+                      var min = arrayMin(data);
+                      var max = arrayMax(data);
+                      var avg = arrayAvg(data);
+                      console.log(min);
+                      console.log(max);
+                      console.log(avg);
+                      var peaks = getPeaksAtThreshold(data, .90);
+                      console.log(peaks);
+
+                      var song = context.createBufferSource();
+                      song.buffer = filteredBuffer;
+                      song.connect(context.destination);
+                      song.start();
+                    };
+                });
+            };
+
+            request.send();
+            
+            
+            // http://joesul.li/van/beat-detection-using-web-audio/
+            function getPeaksAtThreshold(data, threshold) {
+              var peaksArray = [];
+              var length = data.length;
+              for(var i = 0; i < length;) {
+                if (data[i] > threshold) {
+                  peaksArray.push(i);
+                  // Skip ~1/4s to get past this peak.
+                  i += 11000;
+                  // Skip ~1/8s to get past this peak.
+                  //   i += 5500;
+                }
+                i++;
+              }
+              return peaksArray;
+            }
+
+            function arrayMin(array) {
+                var min = Infinity;
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] < min) min = array[i];
+                }
+                return min;
+            }
+
+            function arrayMax(array) {
+                var max = -Infinity;
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] > max) max = array[i];
+                }
+                return max;
+            }
+
+            function arrayAvg(array) {
+                var sum = 0;
+                for (var i = 0; i < array.length; i++) {
+                    sum += array[i]
+                }
+                return sum / array.length;
+            }
+
+            function downsample(data, samples) {
+                var downsampled = [];
+                var toMod = Math.round(data.length / samples);
+
+                for (var i = 0; i < data.length; i++) {
+                    if (i % toMod == 0) downsampled.push(data[i]);
+                }
+
+                return downsampled;
+            }
+
+            function normalize(data) {
+                var normalized = [];
+
+                for (var i = 0; i < data.length; i++) {
+                    normalized.push(Math.abs(Math.round((data[i + 1] - data[i]) * 1000)));
+                }
+            
+                return normalized;
+            }
+        </script>
+    </body>
+</html> 
