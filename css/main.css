@@ -5,4 +5,28 @@ html, body {
 
 #main_div {
    text-align: center;
+   font-family: Lato;
+   float: left;
+   width: 40%;
+   position: relative;
+   /*left: 52%;*/
+}
+
+#right_div {
+   float: right;
+   width: 60%;
+   position: relative;
+   overflow: hidden;
+   background-color: #EDC9AF;
+}
+
+.assignment {
+   text-transform: uppercase;
+   letter-spacing: 3px;
+   font-size: 10px;
+}
+
+.title {
+   font-family: 'Amatic SC';
+   font-size: 50px !important;
 }
