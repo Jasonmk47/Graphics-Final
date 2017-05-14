@@ -165,8 +165,6 @@ EulerUpdater.prototype.updateLifetimes = function ( particleAttributes, alive, d
     var positions     = particleAttributes.position;
     var lifetimes     = particleAttributes.lifetime;
 
-    var bounced = particleAttributes.bounced;
-
     for ( var i = 0 ; i < alive.length ; ++i ) {
 
         if ( !alive[i] ) continue;
@@ -174,7 +172,6 @@ EulerUpdater.prototype.updateLifetimes = function ( particleAttributes, alive, d
         var lifetime = getElement( i, lifetimes );
 
         if ( lifetime < 0 ) {
-            setElement( i, bounced, false)
             killParticle( i, particleAttributes, alive );
         } else {
             setElement( i, lifetimes, lifetime - delta_t );
