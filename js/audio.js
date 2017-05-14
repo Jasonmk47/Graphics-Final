@@ -4,6 +4,7 @@ var request;
 var source;
 var processor;
 var analyser;
+var gain;
 var isPlaying = false; // conditional to track whether audio is playing
 var hist = []; // histogram for final output
 // color palette
@@ -78,9 +79,9 @@ var url = "../audio/weewoo.mp3"; // default
 
 // preloaded file dropdown onchange
 function dropdownChange(value) {
-    context.close();
+    context.close(); // end current audio
     url = value;
-    requester();
+    requester(); // new request
 }
 
 // start default chain
@@ -92,7 +93,7 @@ audio_file.onchange = function() {
   var reader = new FileReader();
   reader.readAsArrayBuffer(file);
   reader.onload = function() {
-      context.close();
+      context.close(); // stop anything currently playing
       newSong(reader.result);
   };
 };
@@ -110,6 +111,7 @@ function requester() {
 }
 
 // Web Audio API to create context/buffers and play audio
+// helpfuL: http://srchea.com/experimenting-with-web-audio-api-three-js-webgl
 function newSong(undecoded) {
     context = new AudioContext();
     context.decodeAudioData(undecoded, function (buffer) {
@@ -123,16 +125,22 @@ function newSong(undecoded) {
         // analyzer
         analyser = context.createAnalyser();
         analyser.fftSize = 128;
+        // gain
+        gain = context.createGain();
 
         // populate/reset histogram
         for (var i = 0; i < analyser.fftSize / 2; i++) {
             hist[i] = 0;
         }
         // connect nodes
+        // analyzer
         source.connect(analyser);
         analyser.connect(processor);
-        source.connect(context.destination);
         processor.connect(context.destination);
+        // playback
+        source.connect(gain);
+        gain.connect(context.destination);
+
         // function for processing frequency data
         processor.onaudioprocess = function(e) {
             freqArray = new Uint8Array(analyser.frequencyBinCount);
@@ -175,6 +183,11 @@ function chooseRandBin(arr) {
             partialSum += arr[i];
         }
     }
+}
+
+// gain event onchange
+function gainChange(value) {
+    gain.gain.value = value;
 }
 
 // play audio (from beginning)
