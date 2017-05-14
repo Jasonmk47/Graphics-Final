@@ -70,7 +70,7 @@ SplashInitializer.prototype.initializeTextures = function ( textures, toSpawn ) 
 
         setElement( idx, textures, texture );
     }
-    sizes.needUpdate = true;
+    textures.needUpdate = true;
 }
 
 
@@ -120,9 +120,9 @@ SplashInitializer.prototype.initialize = function ( particleAttributes, toSpawn 
 
     this.initializeColors( particleAttributes.color, toSpawn );
 
-   // this.initializeTextures( particleAttributes.textures, toSpawn );
+    this.initializeTextures( particleAttributes.texture, toSpawn );
 
-   // this.initializeBounced( particleAttributes.bounced, toSpawn );
+    this.initializeBounced( particleAttributes.bounced, toSpawn );
 
     this.initializeLifetimes( particleAttributes.lifetime, toSpawn );
 
