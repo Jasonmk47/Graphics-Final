@@ -11,6 +11,10 @@ var _prev_t;
 var _cur_t;
 var _isRunning;
 
+var bottom = centerY+100;
+var left = centerX-100;
+var right = centerX+100
+
 window.onload = function initialize() {
 	// Draw the cup
    	ctx.strokeStyle = '#000000';
@@ -19,9 +23,7 @@ window.onload = function initialize() {
     ctx.lineWidth = 3;
     ctx.strokeRect(centerX-100, centerY-200, 200, 300);
 
-    var bottom = centerY+100;
-    var left = centerX-100;
-    var right = centerX+100
+    
 
 	for (var i = 0; i < MAX_PARTICLES; i++) {
 		alive[i] = false;
@@ -99,32 +101,29 @@ function updateParticlesVel(delta_t) {
 
 function checkCollisionSand() {
 
-   for (var i = 0; i < index; i++) {
-      for (var j = i + 1; i < index; j++) {
+   // for (var i = 0; i < index; i++) {
+   //    for (var j = i + 1; j < index; j++) {
 
-         dx = particles[i].pos.x - particles[j].pos.x;
-         dy = particles[i].pos.y - particles[j].pos.y;
+   //       dx = particles[i].pos.x - particles[j].pos.x;
+   //       dy = particles[i].pos.y - particles[j].pos.y;
 
-         if (sqrt(dx*dx + dy*dy) > MIN_DIST) {
-            // particles[j].pos = 
-            particles[j].vel = { x: 0, y: 0 };
-         }
+   //       if (Math.sqrt(dx*dx + dy*dy) > MIN_DIST) {
+   //          particles[j].vel = { x: 0, y: 0 };
+   //       }
 
-      }
-   }
+   //    }
+   // }
 
 }
 
 function checkCollisionBottle() {
 
    for (var i = 0; i < index; i++) {
-
-      if ((particles[i].pos.x > bottom + MIN_DIST) || 
-          (particles[i].pos.y < left + MIN_DIST) || 
-          (particles[i].pos.y > right + MIN_DIST)) {
-
+      // if ((particles[i].pos.y > bottom + MIN_DIST) || 
+      //     (particles[i].pos.x < left + MIN_DIST) || 
+      //     (particles[i].pos.x > right + MIN_DIST)) {
+      if (particles[i].pos.y < -200) {
          particles[i].vel = { x: 0, y: 0 };
-
       }
 
    }
