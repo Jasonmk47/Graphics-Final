@@ -16,6 +16,8 @@ window.onload = function initialize() {
 		particles[i] = null;
 	}
 
+//Should make a button for this
+	start();
 	step();
 }
 
@@ -31,6 +33,7 @@ function step() {
     _prev_t = _cur_t;
     if ( !_isRunning ) elapsed = 0.0;
 
+	createParticles();
     updateParticles(elapsed);
 
 	requestAnimationFrame(step);
@@ -51,14 +54,18 @@ function pause() {
 //Called every time step while a song is playing
 function createParticles() {
 
+	isPlaying = true;
+
 	if (isPlaying) {
 		for (var i = 0; i < PARTICLES_PER_STEP; i++) {
-			if (Math.random() < 0.5) {  //With half probability 
-				particles[index++] = {pos: {x:0, y:0, z:0}, vel: {x:0, y:0, z:0} };
+			if (Math.random() < 1) {  //With half probability 
+				particles[index++] = {
+					pos: { x: 0, y: 0, z: 0 },
+					vel: { x: 0, y: 0, z: 0 },
+					color: currentColor;
+				};
 			}
 		}
-
-
 	}
 }
 
@@ -98,8 +105,9 @@ function checkCollisions() {
 }
 
 function updateParticles(delta_t) {
-	updateParticlesVel();
-	updateParticlesPos();
+
+	updateParticlesVel(delta_t);
+	updateParticlesPos(delta_t);
 	
 	checkCollisions();
 
