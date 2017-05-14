@@ -70,13 +70,14 @@ SystemSettings.splash = {
     updaterFunction : EulerUpdater,
     updaterSettings : {
         externalForces : {
-            gravity :     new THREE.Vector3( 0, -20, 0),
+            gravity :     new THREE.Vector3( 0, -30, 0),
             attractors : [],
         },
         collidables: {
             bounceSpheres : [ {sphere : new THREE.Vector4( 0, 0, 0, 10.0 ), damping : 0.5 }, 
                             {sphere : new THREE.Vector4( -50, 0, 0, 10.0 ), damping : 0.5 },
                             {sphere : new THREE.Vector4( 50, 0, 0, 10.0 ), damping : 0.5 } ],
+            sinkPlanes : [ { plane : new THREE.Vector4( 0, -10, 0, 0 ) } ],
         },
     },
 
@@ -85,7 +86,7 @@ SystemSettings.splash = {
     particlesFreq : 1000,
     createScene : function () {
         var sphere_geo = new THREE.SphereGeometry( 10, 10, 10 );
-        var phong      = new THREE.MeshPhongMaterial( {color: 0xffffff, emissive:0xffffee, side: THREE.DoubleSide } );
+        var phong      = new THREE.MeshPhongMaterial( {color: 0xeeeeee, emissive:0xeeeedd, side: THREE.DoubleSide } );
         var sphere1 = new THREE.Mesh( sphere_geo, phong )
         var sphere2 = new THREE.Mesh( sphere_geo, phong )
         var sphere3 = new THREE.Mesh( sphere_geo, phong )
