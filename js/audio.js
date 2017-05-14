@@ -82,6 +82,16 @@ request.onload = function () {
     newSong(request.response);
 };
 
+audio_file.onchange = function() {
+  var file = this.files[0];
+  var reader = new FileReader();
+  reader.readAsArrayBuffer(file);
+  reader.onload = function() {
+      context.close();
+      newSong(reader.result);
+  };
+};
+
 function newSong(undecoded) {
     context = new AudioContext();
     context.decodeAudioData(undecoded, function (buffer) {
@@ -112,6 +122,10 @@ function newSong(undecoded) {
             // console.log(currentColor);
         };
         startAudio();
+
+        source.onended = function() {
+            console.log(hist); // prints histogram when finished
+        };
     });
 }
 
@@ -154,13 +168,3 @@ $('#pause_resume').click(function () {
     if (isPlaying) pauseAudio();
     else resumeAudio();
 });
-
-audio_file.onchange = function() {
-  var file = this.files[0];
-  var reader = new FileReader();
-  reader.readAsArrayBuffer(file);
-  reader.onload = function() {
-      context.close();
-      newSong(reader.result);
-  };
-};
