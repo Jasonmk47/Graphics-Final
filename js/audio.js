@@ -1,5 +1,5 @@
 // initialize variables
-var context = new AudioContext();
+var context;
 var request = new XMLHttpRequest();
 var source;
 var processor;
@@ -79,9 +79,12 @@ request.responseType = 'arraybuffer';
 request.send();
 // onload function
 request.onload = function () {
-    var undecodedAudio = request.response;
+    newSong(request.response);
+};
 
-    context.decodeAudioData(undecodedAudio, function (buffer) {
+function newSong(undecoded) {
+    context = new AudioContext();
+    context.decodeAudioData(undecoded, function (buffer) {
         // create nodes
         // source
         source = context.createBufferSource();
@@ -108,10 +111,9 @@ request.onload = function () {
             hist[randBin] += 1;
             // console.log(currentColor);
         };
-
         startAudio();
     });
-};
+}
 
 function chooseRandBin(arr) {
     var sum = 0;
@@ -157,11 +159,8 @@ audio_file.onchange = function() {
   var file = this.files[0];
   var reader = new FileReader();
   reader.readAsArrayBuffer(file);
-  console.log("some success");
-  //   context = new(window.AudioContext || window.webkitAudioContext)();
-  //   reader.onload = function() {
-  //     context.decodeAudioData(reader.result, function(buffer) {
-  //       prepare(buffer);
-  //     });
-  //   };
+  reader.onload = function() {
+      context.close();
+      newSong(reader.result);
+  };
 };
