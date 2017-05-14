@@ -1,6 +1,7 @@
 var MAX_PARTICLES = 1000;
 var PARTICLES_PER_STEP = 1;
 var GRAVITY = -9.81;
+var MIN_DIST = 5 // min distance between particles before collision
 
 var particles = [];
 var alive = [];
@@ -93,6 +94,20 @@ function updateParticlesVel(delta_t) {
 }
 
 function checkCollisionSand() {
+
+   for (var i = 0; i < particles.length; i++) {
+      for (var j = i + 1; i < particles.length; j++) {
+
+         dx = particles[i].pos.x - particles[j].pos.x;
+         dy = particles[i].pos.y - particles[j].pos.y;
+
+         if (sqrt(dx*dx + dy*dy) > MIN_DIST) {
+            // particles[j].pos = 
+            particles[j].vel = { x: 0, y: 0 };
+         }
+
+      }
+   }
 
 }
 
