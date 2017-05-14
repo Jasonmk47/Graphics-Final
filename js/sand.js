@@ -19,6 +19,10 @@ window.onload = function initialize() {
     ctx.lineWidth = 3;
     ctx.strokeRect(centerX-100, centerY-200, 200, 300);
 
+    var bottom = centerY+100;
+    var left = centerX-100;
+    var right = centerX+100
+
 	for (var i = 0; i < MAX_PARTICLES; i++) {
 		alive[i] = false;
 		particles[i] = null;
@@ -95,8 +99,8 @@ function updateParticlesVel(delta_t) {
 
 function checkCollisionSand() {
 
-   for (var i = 0; i < particles.length; i++) {
-      for (var j = i + 1; i < particles.length; j++) {
+   for (var i = 0; i < index; i++) {
+      for (var j = i + 1; i < index; j++) {
 
          dx = particles[i].pos.x - particles[j].pos.x;
          dy = particles[i].pos.y - particles[j].pos.y;
@@ -112,6 +116,18 @@ function checkCollisionSand() {
 }
 
 function checkCollisionBottle() {
+
+   for (var i = 0; i < index; i++) {
+
+      if ((particles[i].pos.x > bottom + MIN_DIST) || 
+          (particles[i].pos.y < left + MIN_DIST) || 
+          (particles[i].pos.y > right + MIN_DIST)) {
+
+         particles[i].vel = { x: 0, y: 0 };
+
+      }
+
+   }
 
 }
 
