@@ -11,7 +11,7 @@ Gui.blendTypes = [ "Normal", "Additive" ];
 
 Gui.particleSystems = [ "splash" ];
 
-Gui.textures = [ "blank", "base", "fire", "smoke", "spark", "sphere", "smoke" ];
+Gui.textures = [ "blank", "base", "fire", "smoke", "spark", "sphere", "smoke", "waterfall" ];
 
 
 // due to a bug in dat GUI we need to initialize floats to non-interger values (like 0.5)
@@ -104,10 +104,30 @@ Gui.init = function ( meshChangeCallback, controlsChangeCallback, displayChangeC
         }
     } );
 
+    var emittersSet = [];
+
+    function loadTexture(texture) {
+        var index = 0;
+        //Only will be called for the number of emitters so no check for length needed
+        while(emittersSet[index]) { index++; }
+
+        var emitters = ParticleEngine.getEmitters();
+        emitters[index]._material.uniforms.texture.value = texture;
+    }
+
     gc.textures.onChange( function( value ) {
         var emitters = ParticleEngine.getEmitters();
-        for ( var i = 0 ; i < emitters.length ; i++ ) {
-            emitters[i]._material.uniforms.texture.value = new THREE.ImageUtils.loadTexture( 'images/' + value + '.png' );
+
+        for ( var i = 0; i < emitters.length; i++ ) {
+            emittersSet[i] = false;
+        }
+        for ( var i = 0; i < emitters.length; i++ ) {
+            var loader = new THREE.TextureLoader();
+            loader.load('images/' + value + '.png',
+                function ( texture ) {
+                    // do something with the texture
+                    loadTexture(texture);
+                });
             emitters[i]._material.needsUpdate  = true;
         }
     } );

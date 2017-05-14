@@ -58,6 +58,9 @@ Collisions.BounceSphere = function ( particleAttributes, alive, delta_t, sphere,
         if (dist <= r) {
             vel.reflect(pos.clone().normalize()).multiplyScalar(damping);
             pos.multiplyScalar(r/dist);
+
+            var bounced = particleAttributes.bounced;
+            setElement( i, bounced, true );
         }
 
         setElement( i, positions, pos );
@@ -118,12 +121,6 @@ EulerUpdater.prototype.updateColors = function ( particleAttributes, alive, delt
         if ( !alive[i] ) continue;
         var c = getElement( i, colors );
 
-        // using how animated is rainbow-colored to create an exception for animation
-        if (c.z == 1) {
-            var current_life = getElement(i , lifetimes);
-            c.w *= Math.log(current_life) / Math.log(7); 
-        }
-
         setElement( i, colors, c );
     }
 };
@@ -138,12 +135,37 @@ EulerUpdater.prototype.updateSizes = function ( particleAttributes, alive, delta
 
         setElement( i, sizes, s );
     }
+};
 
+EulerUpdater.prototype.updateTextures = function ( particleAttributes, alive, delta_t ) {
+    var textures    = particleAttributes.texture;
+    var positions  = particleAttributes.position;
+    var bounced = particleAttributes.bounced;
+
+    for ( var i = 0 ; i < alive.length ; ++i ) {
+
+        if ( !alive[i] ) continue;
+
+        var t = getElement( i, textures);
+        var pos = getElement( i, positions);
+        var bounce = getElement( i, bounced );
+
+        if (bounce < 1) {
+            t = 0;
+        }
+        else {
+            t = 1;
+        }
+
+        setElement( i, textures, t );
+    }
 };
 
 EulerUpdater.prototype.updateLifetimes = function ( particleAttributes, alive, delta_t) {
     var positions     = particleAttributes.position;
     var lifetimes     = particleAttributes.lifetime;
+
+    var bounced = particleAttributes.bounced;
 
     for ( var i = 0 ; i < alive.length ; ++i ) {
 
@@ -152,6 +174,7 @@ EulerUpdater.prototype.updateLifetimes = function ( particleAttributes, alive, d
         var lifetime = getElement( i, lifetimes );
 
         if ( lifetime < 0 ) {
+            setElement( i, bounced, false)
             killParticle( i, particleAttributes, alive );
         } else {
             setElement( i, lifetimes, lifetime - delta_t );
@@ -197,11 +220,13 @@ EulerUpdater.prototype.update = function ( particleAttributes, alive, delta_t ) 
     this.collisions( particleAttributes, alive, delta_t );
 
     this.updateColors( particleAttributes, alive, delta_t );
+    this.updateTextures( particleAttributes, alive, delta_t );
     this.updateSizes( particleAttributes, alive, delta_t );
 
     // tell webGL these were updated
     particleAttributes.position.needsUpdate = true;
     particleAttributes.color.needsUpdate = true;
+    particleAttributes.texture.needsUpdate = true;
     particleAttributes.velocity.needsUpdate = true;
     particleAttributes.lifetime.needsUpdate = true;
     particleAttributes.size.needsUpdate = true;

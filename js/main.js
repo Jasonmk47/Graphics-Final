@@ -27,6 +27,7 @@ Main.particleSystemChangeCallback = function ( InputSettings ) {
         initialize:    initializer,                  // initializer object
         update:        updater,                      // updater object
         material:      InputSettings.particleMaterial,
+        secondaryMaterial: InputSettings.secondaryMaterial,
         width:         InputSettings.width,
         height:        InputSettings.height,
     } );

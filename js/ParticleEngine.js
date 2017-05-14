@@ -118,8 +118,10 @@ function Emitter ( opts ) {
         position:      3,
         velocity:      3,
         color:         4,
+        texture:       1,
         size:          1,
         lifetime:      1,
+        bounced:       1, 
     };
 
     // parse options
@@ -127,6 +129,8 @@ function Emitter ( opts ) {
         var value = opts[option];
         if ( option === "material" ) {
             this._material = value;
+        } else if ( option === "secondaryMaterial" ) {
+            this._secondaryMaterial = value;
         } else if ( option === "maxParticles" ) {
             this._maxParticleCount = value;
         } else if ( option === "particlesFreq" ) {
@@ -135,8 +139,6 @@ function Emitter ( opts ) {
             this._initializer = value;
         } else if ( option === "update" ) {
             this._updater = value;
-        } else if ( option === "material" ) {
-            this._material = value;
         } else if ( option === "width" ) {
             this._width = value;
         } else if ( option === "height" ) {
@@ -177,12 +179,16 @@ function Emitter ( opts ) {
 
     this._particleAttributes = this._particles.attributes; // for convenience / less writing / not sure / #badprogramming
 
-    this._sorting = false;
-    this._distances = [];
+    this._sorting = true;
+    this._textures = [];
     this._backupArray = new Float32Array( this._maxParticleCount * 4 );
 
     // Create the drawable particles - this is the object that three.js will use to draw stuff onto screen
-    this._drawableParticles = new THREE.PointCloud( this._particles, this._material );
+    //this._material.uniforms.texture.value = new THREE.ImageUtils.loadTexture( 'images/waterfall.png');
+    var materials = new THREE.MeshFaceMaterial([this._material, this._secondaryMaterial]);
+
+    this._drawableParticles = new THREE.Points( this._particles, materials );
+
 
     return this;
 };
@@ -206,7 +212,6 @@ Emitter.prototype.restart = function() {
         }
 
         attribute.needsUpdate = true;
-
     }
 }
 
@@ -221,6 +226,8 @@ Emitter.prototype.update = function( delta_t ) {
     // add check for existence
     this._updater.update( this._particleAttributes, this._initialized, delta_t, this._width, this._height );
 
+    this._drawableParticles.geometry.clearGroups();
+
     // sorting -> Move it to camera update / loop update so that it is updated each time even if time is paused?
     if ( this._sorting === true ) {
         this.sortParticles();
@@ -228,7 +235,6 @@ Emitter.prototype.update = function( delta_t ) {
 
     // for visibility culling
     this._drawableParticles.geometry.computeBoundingSphere();
-
 }
 
 
@@ -240,16 +246,22 @@ Emitter.prototype.getDrawableParticles = function () {
     return this._drawableParticles;
 };
 
+
+//TODO: Change this to sort into material groups
 Emitter.prototype.sortParticles = function () {
-    var positions  = this._particleAttributes.position;
-    var cameraPosition = Renderer._camera.position;
+    var texture  = this._particleAttributes.texture;
+
+    var counter = 0;
 
     for ( var i = 0 ; i < this._maxParticleCount ; ++i ) {
-        var currentPosition =  getElement( i, positions );
-        this._distances[i] = [cameraPosition.distanceToSquared( currentPosition ),i];
+        var currentTexture =  getElement( i, texture );
+
+        if (currentTexture === 1) counter++;
+
+        this._textures[i] = [ currentTexture, i];
     }
 
-    this._distances.sort( function( a, b ) { return a[0] < b[0] } );
+    this._textures.sort( function( a, b ) { return a[0] < b[0] } );
 
     for ( var attributeKey in this._particleAttributes ) {
 
@@ -258,7 +270,7 @@ Emitter.prototype.sortParticles = function () {
 
         for ( var i = 0 ; i < this._maxParticleCount ; ++i ) {
             for ( var j = 0 ; j < attributeLength ; ++j ) {
-                this._backupArray[4 * i + j ] = attributeArray[ attributeLength * this._distances[i][1] + j ]
+                this._backupArray[4 * i + j ] = attributeArray[ attributeLength * this._textures[i][1] + j ]
             }
         }
 
@@ -271,12 +283,16 @@ Emitter.prototype.sortParticles = function () {
 
     initialized_cpy = []
     for ( var i = 0 ; i < this._maxParticleCount ; ++i ) {
-        initialized_cpy[ i ] = this._initialized[ this._distances[i][1] ];
+        initialized_cpy[ i ] = this._initialized[ this._textures[i][1] ];
     }
 
     for ( var i = 0 ; i < this._maxParticleCount ; ++i ) {
         this._initialized[ i ] = initialized_cpy[i];
     }
+
+    this._drawableParticles.geometry.addGroup(0, counter, 1);
+    this._drawableParticles.geometry.addGroup(counter, this._maxParticleCount, 0);
+    this._drawableParticles.geometry.groups;
 };
 
 Emitter.prototype.getSpawnable = function ( toAdd ) {
