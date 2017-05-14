@@ -104,9 +104,9 @@ request.onload = function () {
             freqArray = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(freqArray);
             var randBin = chooseRandBin(freqArray);
-            currentColor = colors[randbin];
+            currentColor = colors[randBin];
             hist[randBin] += 1;
-            console.log(currentColor);
+            // console.log(currentColor);
         };
 
         startAudio();

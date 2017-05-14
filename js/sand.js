@@ -54,8 +54,6 @@ function pause() {
 //Called every time step while a song is playing
 function createParticles() {
 
-	isPlaying = true;
-
 	if (isPlaying) {
 		for (var i = 0; i < PARTICLES_PER_STEP; i++) {
 			if (Math.random() < 1) {  //With half probability 
