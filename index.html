@@ -22,6 +22,12 @@
         <input class="button" id="audio_file" type="file" accept="audio/*"></input>
         <br>
         <button id="pause_resume">Pause/Resume</button>
+        <br>
+        <select id ="songs" name="songs" onchange="dropdownChange(this.value);">
+            <option value='../audio/weewoo.mp3'>Wee Woo</option>
+            <option value='../audio/animalrights.mp3'>Animal Rights</option>
+            <!--<option value='3'>Three</option>-->
+        </select>
     </div>
     <div id="right_div">
         <canvas id="canvas" onload="initializeCanvas"> </canvas>

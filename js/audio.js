@@ -4,8 +4,9 @@ var request;
 var source;
 var processor;
 var analyser;
-var isPlaying = false;
-var hist = [];
+var isPlaying = false; // conditional to track whether audio is playing
+var hist = []; // histogram for final output
+// color palette
 var colors = [ // every color is repeated (32 => 64)
     '#fef59f',
     '#fef59f',
@@ -72,8 +73,15 @@ var colors = [ // every color is repeated (32 => 64)
     '#e1e885',
     '#e1e885'
 ];
-var currentColor;
+var currentColor = "#FFFFFF"; // default color as white
 var url = "../audio/weewoo.mp3"; // default
+
+// preloaded file dropdown onchange
+function dropdownChange(value) {
+    context.close();
+    url = value;
+    requester();
+}
 
 // start default chain
 requester();
