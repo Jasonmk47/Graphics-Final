@@ -6,8 +6,75 @@ var processor;
 var analyser;
 var isPlaying = false;
 var hist = [];
+var colors = [ // every color is repeated (32 => 64)
+    '#fef59f',
+    '#fef59f',
+    '#f9e385',
+    '#f9e385',
+    '#f9d585',
+    '#f9d585',
+    '#feca89',
+    '#feca89',
+    '#fcbd89',
+    '#fcbd89',
+    '#f9a880',
+    '#f9a880',
+    '#f69578',
+    '#f69578',
+    '#f69589',
+    '#f69589',
+    '#f59393',
+    '#f59393',
+    '#f597a1',
+    '#f597a1',
+    '#f599b0',
+    '#f599b0',
+    '#f29cc0',
+    '#f29cc0',
+    '#d399c2',
+    '#d399c2',
+    '#b998c7',
+    '#b998c7',
+    '#a998c9',
+    '#a998c9',
+    '#9f99cb',
+    '#9f99cb',
+    '#94b3d9',
+    '#94b3d9',
+    '#85b0de',
+    '#85b0de',
+    '#7bb5e2',
+    '#7bb5e2',
+    '#82c2eb',
+    '#82c2eb',
+    '#85cae9',
+    '#85cae9',
+    '#6ecff6',
+    '#6ecff6',
+    '#75cee1',
+    '#75cee1',
+    '#7cced2',
+    '#7cced2',
+    '#80cdc0',
+    '#80cdc0',
+    '#8bceae',
+    '#8bceae',
+    '#97d1ac',
+    '#97d1ac',
+    '#9fd3a1',
+    '#9fd3a1',
+    '#a7d497',
+    '#a7d497',
+    '#b2d78a',
+    '#b2d78a',
+    '#d1e392',
+    '#d1e392',
+    '#e1e885',
+    '#e1e885'
+];
+var currentColor;
 
-request.open('GET', 'weewoo.mp3', true);
+request.open('GET', '../audio/weewoo.mp3', true);
 request.responseType = 'arraybuffer';
 request.send();
 // onload function
@@ -36,13 +103,16 @@ request.onload = function () {
         processor.onaudioprocess = function(e) {
             freqArray = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(freqArray);
-            var randBin = chooseRandBin(freqArray) + 1; // 1-64 instead of 0-63
-            hist[randBin-1] += 1;
-            // console.log(randBin);
+            var randBin = chooseRandBin(freqArray);
+            currentColor = colors[randbin];
+            hist[randBin] += 1;
+            console.log(currentColor);
         };
-        start();
+
+        startAudio();
     });
 };
+
 function chooseRandBin(arr) {
     var sum = 0;
     for (var i = 0; i < arr.length; i++) {
@@ -60,26 +130,38 @@ function chooseRandBin(arr) {
     }
 }
 
-function start() {
+function startAudio() {
     source.start(context.currentTime); // default starts at 0
     // source.start(0);
     isPlaying = true;
 }
 
-function pause() {
+function pauseAudio() {
     context.suspend();
     // source.disconnect();
     isPlaying = false;
-    console.log(hist);
 }
 
-function resume() {
+function resumeAudio() {
     context.resume();
     // source.connect(analyser);
     isPlaying = true;
 }
 
 $('#pause_resume').click(function () {
-    if (isPlaying) pause();
-    else resume();
+    if (isPlaying) pauseAudio();
+    else resumeAudio();
 });
+
+audio_file.onchange = function() {
+  var file = this.files[0];
+  var reader = new FileReader();
+  reader.readAsArrayBuffer(file);
+  console.log("some success");
+  //   context = new(window.AudioContext || window.webkitAudioContext)();
+  //   reader.onload = function() {
+  //     context.decodeAudioData(reader.result, function(buffer) {
+  //       prepare(buffer);
+  //     });
+  //   };
+};
