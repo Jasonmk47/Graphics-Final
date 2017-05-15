@@ -17,14 +17,20 @@
 
         <input class="button" id="audio_file" type="file" accept="audio/*"></input>
         <br>
+        <br>
+        <span>Volume: </span>
         <input id="gain" type="range" min="0" max="1" step="0.01" value="0.8" onchange="gainChange(this.value);"/>
         <br>
-        <button id="pause_resume">Pause/Resume</button>
         <br>
+        <button class="button" id="pause_resume">Pause/Resume</button>
+        <br>
+        <br>
+        <span>Song: </span>
         <select id ="songs" name="songs" onchange="dropdownChange(this.value);">
             <option value='../audio/weewoo.mp3'>Wee Woo</option>
             <option value='../audio/animalrights.mp3'>Animal Rights</option>
-            <!--<option value='3'>Three</option>-->
+            <option value='../audio/humble.mp3'>Humble</option>
+            <option value='../audio/chopin.mp3'>Chopin (Prelude #4)</option>
         </select>
     </div>
     <div id="right_div">
