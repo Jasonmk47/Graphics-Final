@@ -1,10 +1,12 @@
 var MAX_PARTICLES = 1000;
 var PARTICLES_PER_STEP = 1;
-var GRAVITY = -9.81;
-var MIN_DIST = 1 // min distance between particles before collision
+var GRAVITY = -9.81 * 2;
+var DRAG = 0.99;
+var MIN_DIST = 6 // min distance between particles before collision
 
 var particles = [];
 var alive = [];
+var accel = []
 var index = 0; //Don't delete particles and only increase index
 
 var _prev_t;
@@ -26,6 +28,7 @@ window.onload = function initialize() {
 	for (var i = 0; i < MAX_PARTICLES; i++) {
 		alive[i] = false;
 		particles[i] = null;
+      accel[i] = 1;
 	}
 
 //Should make a button for this
@@ -68,11 +71,12 @@ function createParticles() {
 
 	if (isPlaying) {
 		for (var i = 0; i < PARTICLES_PER_STEP; i++) {
-			if (Math.random() < 1) {  //With half probability 
+			if (Math.random() < .1) {  //With half probability 
 				particles[index++] = {
-					pos: { x: 0, y: 0 },
-					vel: { x: 0, y: 0 },
-					color: currentColor ? currentColor : "#FFF"	
+					pos: { x: Math.random() * 20, y: 0 },
+					vel: { x: Math.random() * 2 - 1, y: -100 },
+					color: currentColor ? currentColor : "#FFF",
+               movement: 10
 				};
 			}
 		}
@@ -85,6 +89,7 @@ function updateParticlesPos(delta_t) {
 	for (var i = 0; i < index; i++) {
 		particles[i].pos.x += particles[i].vel.x * delta_t;
 		particles[i].pos.y += particles[i].vel.y * delta_t;
+      particles[i].movement += Math.abs(particles[i].vel.y * delta_t);
 	}
 }
 
@@ -93,11 +98,15 @@ function updateParticlesVel(delta_t) {
 	//Only check up to index
 	for (var i = 0; i < index; i++) {
 		particles[i].vel.x += 0 * delta_t;
-		particles[i].vel.y += GRAVITY * delta_t;
+      particles[i].vel.x *= DRAG;
+		particles[i].vel.y += GRAVITY * delta_t * accel[i];
+
+      if (particles[i].movement < 0.05) particles[i].vel = { x: 0, y: 0 };
+      else particles[i].movement *= 0.9;
 	}
 }
 
-function checkCollisionSand() {
+function checkCollisionSand(delta_t) {
 
    for (var i = 0; i < index; i++) {
       for (var j = i + 1; j < index; j++) {
@@ -105,14 +114,16 @@ function checkCollisionSand() {
          dx = particles[i].pos.x - particles[j].pos.x;
          dy = particles[i].pos.y - particles[j].pos.y;
 
-         if (Math.sqrt(dx*dx + dy*dy) < MIN_DIST) {
-            if (particles[i].pos.y < -100) {
-               particles[j].pos.y = particles[i].pos.y + MIN_DIST
-               particles[j].vel.x = Math.random()*20-10;
-               // particles[j].vel = { x: -dx, y: -dy };
-            }
-         }
+         // if collision detected
+         if (Math.sqrt(dx*dx + dy*dy) < MIN_DIST && particles[i].vel.y > -1) {
 
+            // set position back to height it was at previous time step
+            particles[j].pos.y -= particles[j].vel.y * delta_t;
+
+            if (particles[j].vel.x != 0) particles[j].vel.x = -dx * 3;
+            particles[j].vel.y *= -0.1;
+
+          }
       }
    }
 
@@ -125,7 +136,8 @@ function checkCollisionBottle() {
       // bottom
       if (particles[i].pos.y < -200) {
          particles[i].pos.y = -200;
-         particles[i].vel.y = 0;
+         particles[i].vel = { x: 0, y: 0};
+         accel[i] = 0;
       }
 
       // right
@@ -143,9 +155,9 @@ function checkCollisionBottle() {
    }
 }
 
-function checkCollisions() {
+function checkCollisions(delta_t) {
 
-	checkCollisionSand();
+	checkCollisionSand(delta_t);
    checkCollisionBottle();
 
 }
@@ -171,10 +183,11 @@ function drawSand(particles) {
 
 function updateParticles(delta_t) {
 
-	updateParticlesVel(delta_t);
+   ctx.clearRect(0, 0, canvas.width, canvas.height);
 	updateParticlesPos(delta_t);
-	
-   checkCollisions();
+	  updateParticlesVel(delta_t);
+
+   checkCollisions(delta_t);
 
 	//redraw
 	drawSand(particles);
