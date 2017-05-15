@@ -101,7 +101,7 @@ function updateParticlesVel(delta_t) {
       particles[i].vel.x *= DRAG;
 		particles[i].vel.y += GRAVITY * delta_t * accel[i];
 
-      if (particles[i].movement < 0.05) particles[i].vel = { x: 0, y: 0 };
+      if (particles[i].movement < 0.1) { particles[i].vel = { x: 0, y: 0 }; particles[i].movement = 0}
       else particles[i].movement *= 0.9;
 	}
 }
@@ -110,6 +110,9 @@ function checkCollisionSand(delta_t) {
 
    for (var i = 0; i < index; i++) {
       for (var j = i + 1; j < index; j++) {
+
+         if (particles[j].movement === 0)
+            continue;
 
          dx = particles[i].pos.x - particles[j].pos.x;
          dy = particles[i].pos.y - particles[j].pos.y;
