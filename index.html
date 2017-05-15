@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title> COS426 Final Project &mdash; Sand</title>
+    <title> COS426 Final Project &mdash; Sandstorm.mp3</title>
     <link href="/css/main.css" type="text/css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -18,15 +18,16 @@
         <input class="button" id="audio_file" type="file" accept="audio/*"></input>
         <br>
         <br>
-        <span>Volume: </span>
+        <span class="ui_label">Volume: </span>
         <input id="gain" type="range" min="0" max="1" step="0.01" value="0.8" onchange="gainChange(this.value);"/>
         <br>
         <br>
         <button class="button" id="pause_resume">Pause/Resume</button>
         <br>
         <br>
-        <span>Song: </span>
-        <select id ="songs" name="songs" onchange="dropdownChange(this.value);">
+        <span class="ui_label">Song: </span>
+        <select id="songs" name="songs" onchange="dropdownChange(this.value);">
+            <option value='../audio/sandstorm.mp3'>Sandstorm</option>
             <option value='../audio/weewoo.mp3'>Wee Woo</option>
             <option value='../audio/animalrights.mp3'>Animal Rights</option>
             <option value='../audio/humble.mp3'>Humble</option>

@@ -23,8 +23,6 @@ window.onload = function initialize() {
     ctx.lineWidth = 3;
     ctx.strokeRect(centerX-100, centerY-200, 200, 300);
 
-    
-
 	for (var i = 0; i < MAX_PARTICLES; i++) {
 		alive[i] = false;
 		particles[i] = null;

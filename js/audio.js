@@ -75,7 +75,7 @@ var colors = [ // every color is repeated (32 => 64)
     '#e1e885'
 ];
 var currentColor = "#FFFFFF"; // default color as white
-var url = "../audio/weewoo.mp3"; // default
+var url = "../audio/sandstorm.mp3"; // default
 
 // preloaded file dropdown onchange
 function dropdownChange(value) {
