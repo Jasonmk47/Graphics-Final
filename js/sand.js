@@ -1,7 +1,7 @@
 var MAX_PARTICLES = 1000;
 var PARTICLES_PER_STEP = 1;
 var GRAVITY = -9.81;
-var MIN_DIST = 5 // min distance between particles before collision
+var MIN_DIST = 1 // min distance between particles before collision
 
 var particles = [];
 var alive = [];
@@ -35,18 +35,18 @@ window.onload = function initialize() {
 
 function start() {
 	_prev_t = Date.now();
-    _cur_t  = Date.now();
-    _isRunning = true;
+   _cur_t  = Date.now();
+   _isRunning = true;
 }
 
 function step() {
-    _cur_t  = Date.now();
-    var elapsed  = (_cur_t - _prev_t) / 1000.0;
-    _prev_t = _cur_t;
-    if ( !_isRunning ) elapsed = 0.0;
+   _cur_t  = Date.now();
+   var elapsed  = (_cur_t - _prev_t) / 1000.0;
+   _prev_t = _cur_t;
+   if ( !_isRunning ) elapsed = 0.0;
 
 	createParticles();
-    updateParticles(elapsed);
+   updateParticles(elapsed);
 
 	requestAnimationFrame(step);
 }
@@ -71,7 +71,7 @@ function createParticles() {
 			if (Math.random() < 1) {  //With half probability 
 				particles[index++] = {
 					pos: { x: 0, y: 0 },
-					vel: { x: 0, y: -100 },
+					vel: { x: 0, y: 0 },
 					color: currentColor ? currentColor : "#FFF"	
 				};
 			}
@@ -99,39 +99,54 @@ function updateParticlesVel(delta_t) {
 
 function checkCollisionSand() {
 
-   // for (var i = 0; i < index; i++) {
-   //    for (var j = i + 1; j < index; j++) {
+   for (var i = 0; i < index; i++) {
+      for (var j = i + 1; j < index; j++) {
 
-   //       dx = particles[i].pos.x - particles[j].pos.x;
-   //       dy = particles[i].pos.y - particles[j].pos.y;
+         dx = particles[i].pos.x - particles[j].pos.x;
+         dy = particles[i].pos.y - particles[j].pos.y;
 
-   //       if (Math.sqrt(dx*dx + dy*dy) > MIN_DIST) {
-   //          particles[j].vel = { x: 0, y: 0 };
-   //       }
+         if (Math.sqrt(dx*dx + dy*dy) < MIN_DIST) {
+            if (particles[i].pos.y < -100) {
+               particles[j].pos.y = particles[i].pos.y + MIN_DIST
+               particles[j].vel.x = Math.random()*20-10;
+               // particles[j].vel = { x: -dx, y: -dy };
+            }
+         }
 
-   //    }
-   // }
+      }
+   }
 
 }
 
 function checkCollisionBottle() {
 
    for (var i = 0; i < index; i++) {
-      // if ((particles[i].pos.y > bottom + MIN_DIST) || 
-      //     (particles[i].pos.x < left + MIN_DIST) || 
-      //     (particles[i].pos.x > right + MIN_DIST)) {
+      
+      // bottom
       if (particles[i].pos.y < -200) {
-         particles[i].vel = { x: 0, y: 0 };
+         particles[i].pos.y = -200;
+         particles[i].vel.y = 0;
+      }
+
+      // right
+      if (particles[i].pos.x > 100) {
+         particles[i].pos.x = 100;
+         particles[i].vel.x = 0;
+      }
+
+      // left
+      if (particles[i].pos.x < -100) {
+         particles[i].pos.x = -100;
+         particles[i].vel.x = 0;
       }
 
    }
-
 }
 
 function checkCollisions() {
 
 	checkCollisionSand();
-	checkCollisionBottle();
+   checkCollisionBottle();
 
 }
 
@@ -159,7 +174,7 @@ function updateParticles(delta_t) {
 	updateParticlesVel(delta_t);
 	updateParticlesPos(delta_t);
 	
-	checkCollisions();
+   checkCollisions();
 
 	//redraw
 	drawSand(particles);
