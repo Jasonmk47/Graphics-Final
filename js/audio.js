@@ -40,7 +40,7 @@ var colors = [ // every color is repeated (32 => 64)
     '#a998c9',
     '#a998c9',
     '#9f99cb',
-    '#9f99cb',
+    '#9f99cb', // 32
     '#94b3d9',
     '#94b3d9',
     '#85b0de',
@@ -124,7 +124,7 @@ function newSong(undecoded) {
         processor.buffer = buffer;
         // analyzer
         analyser = context.createAnalyser();
-        analyser.fftSize = 128;
+        analyser.fftSize = 128; // constant, needs to be power of 2
         // gain
         gain = context.createGain();
 
@@ -171,12 +171,12 @@ function chooseRandBin(arr) {
     }
 
     // find random number within range of array sum
-    var rand = Math.floor(Math.random() * sum) + 1;
+    var rand = Math.floor(Math.random() * sum) + 1; // +1 because sum is from [1, total]
 
     // compare with running sum to select a weighted random index from array
     var partialSum = 0;
     for (var i = 0; i < arr.length; i++) {
-        if (partialSum > rand) {
+        if (partialSum >= rand) {
             return i - 1;
         }
         else {
