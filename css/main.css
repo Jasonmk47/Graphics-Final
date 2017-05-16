@@ -12,6 +12,11 @@ html, body {
    /*left: 52%;*/
 }
 
+#main_bottom {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
 #right_div {
    float: right;
    width: 60%;

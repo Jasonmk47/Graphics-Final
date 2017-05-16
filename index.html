@@ -6,34 +6,42 @@
     <link href="/css/main.css" type="text/css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js"></script>
 </head>
 
 <body>
 
     <div id="main_div">
-        <h1> <span class="title">Sandstorm.mp3</span><br>
-        <span class="assignment">COS426 Final Project</span><br>
-        <span class="names">Savannah Du (savannah) <br> Jason Kim (jasonmk) <br> Michael Zhang (mzz)</span></h1>
+        <div id="main_top">
+            <h1> <span class="title">Sandstorm.mp3</span><br>
+            <span class="assignment">COS426 Final Project</span><br>
+            <span class="names">Savannah Du (savannah) <br> Jason Kim (jasonmk) <br> Michael Zhang (mzz)</span></h1>
 
-        <input class="button" id="audio_file" type="file" accept="audio/*"></input>
-        <br>
-        <br>
-        <span class="ui_label">Volume: </span>
-        <input id="gain" type="range" min="0" max="1" step="0.01" value="0.8" onchange="gainChange(this.value);"/>
-        <br>
-        <br>
-        <button class="button" id="pause_resume">Pause/Resume</button>
-        <br>
-        <br>
-        <span class="ui_label">Song: </span>
-        <select id="songs" name="songs" onchange="dropdownChange(this.value);">
-            <option value='../audio/sandstorm.mp3'>Sandstorm</option>
-            <option value='../audio/weewoo.mp3'>K-Pop (Wee Woo)</option>
-            <option value='../audio/humble.mp3'>Humble</option>
-            <option value='../audio/chopin.mp3'>Chopin (Prelude #4)</option>
-            <option value='../audio/paganini.mp3'>Paganini (Caprice #24)</option>
-            <option value='../audio/bohemianrhapsody.mp3'>Bohemian Rhapsody</option>
-        </select>
+            <input class="button" id="audio_file" type="file" accept="audio/*"></input>
+            <br>
+            <br>
+            <span class="ui_label">Volume: </span>
+            <input id="gain" type="range" min="0" max="1" step="0.01" value="0.8" onchange="gainChange(this.value);"/>
+            <br>
+            <br>
+            <button class="button" id="pause_resume">Pause/Resume</button>
+            <br>
+            <br>
+            <span class="ui_label">Song: </span>
+            <select id="songs" name="songs" onchange="dropdownChange(this.value);">
+                <option value='../audio/sandstorm.mp3'>Sandstorm</option>
+                <option value='../audio/weewoo.mp3'>K-Pop (Wee Woo)</option>
+                <option value='../audio/humble.mp3'>Humble</option>
+                <option value='../audio/chopin.mp3'>Chopin (Prelude #4)</option>
+                <option value='../audio/paganini.mp3'>Paganini (Caprice #24)</option>
+                <option value='../audio/bohemianrhapsody.mp3'>Bohemian Rhapsody</option>
+                <option value='../audio/butt.wav'>Voice Sample</option>
+            </select>
+        </div>
+        <div id="main_bottom">
+            <h2>Frequency Histogram</h2>
+            <canvas id="hist"></canvas>
+        </div>
     </div>
     <div id="right_div">
         <canvas id="canvas" onload="initializeCanvas"> </canvas>
