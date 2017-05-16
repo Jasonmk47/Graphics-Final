@@ -13,24 +13,9 @@
 
     <div id="main_div">
         <div id="main_top">
-            <h1> <span class="title">Sandstorm.mp3</span><br>
-            <span class="assignment">COS426 Final Project</span><br>
-            <span class="names">Savannah Du (savannah) <br> Jason Kim (jasonmk) <br> Michael Zhang (mzz)</span></h1>
-
-            <input class="button" id="audio_file" type="file" accept="audio/*"></input>
-            <br>
-            <br>
-            <span class="ui_label">Volume: </span>
-            <input id="gain" type="range" min="0" max="1" step="0.01" value="0.8" onchange="gainChange(this.value);"/>
-            <br>
-            <br>
-            <button class="button" id="pause_resume">Pause/Resume</button>
-            <br>
-            <br>
-            <button class="button" id="clear_particles">Clear Particles</button>
-            <br>
-            <br>
-            <span class="ui_label">Song: </span>
+            <h1><span class="title">Sandstorm.mp3</span><br>
+            <span class="names">Savannah Du // Jason Kim // Michael Zhang</span></h1>
+            <span class="ui_label">Choose a song</span><br>
             <select id="songs" name="songs" onchange="dropdownChange(this.value);">
                 <option value='../audio/sandstorm.mp3'>Darude - Sandstorm</option>
                 <option value='../audio/miley.mp3'>Pop (Miley Cyrus - Party in the U.S.A.)</option>
@@ -42,9 +27,22 @@
                 <option value='../audio/bohemianrhapsody.mp3'>Queen - Bohemian Rhapsody</option>
                 <option value='../audio/butt.wav'>Voice Sample</option>
             </select>
+            <br>
+            <br>
+            <br>
+            <span class="ui_label">Or upload any audio</span><br>
+            <input class="" id="audio_file" type="file" accept="audio/*"></input>
+            <br>
+            <br>
+            <br>
+            <span class="ui_label">Volume: </span>
+            <input id="gain" type="range" min="0" max="1" step="0.01" value="0.8" onchange="gainChange(this.value);"/>
+            <br>
+            <button class="button" id="pause_resume">Pause/Resume</button>
+            <button class="button" id="clear_particles">Clear</button><br>
         </div>
         <div id="main_bottom" >
-            <h2 id="chart_title"></h2>
+            <h2 class="ui_label" id="chart_title"></h2>
             <canvas id="hist"></canvas>
         </div>
     </div>

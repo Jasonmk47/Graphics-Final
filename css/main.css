@@ -26,9 +26,9 @@ html, body {
 }
 
 .assignment {
-   text-transform: uppercase;
+   text-transform: lowercase;
    letter-spacing: 3px;
-   font-size: 10px;
+   font-size: 12px;
 }
 
 .title {
@@ -38,8 +38,40 @@ html, body {
 
 .names {
    font-size: 10px;
+   text-transform: lowercase;
+   font-weight: lighter;
+   letter-spacing: 1px;
 }
 
 #canvas {
    margin-left: 25%;
+}
+
+.button {
+   font-family: Lato;
+   text-transform: lowercase;
+   background-color: #EDC9AF;
+   font-size: 8px;
+   border: none;
+   border-radius: 3px;
+   letter-spacing: 2px;
+   cursor: pointer;
+   margin: 10px 10px 10px 10px;
+}
+
+.button:hover {
+   font-weight: bold;
+}
+
+.button:focus {
+   outline: none;
+}
+
+.ui_label {
+   font-family: Lato;
+   font-size: 12px;
+   text-transform: lowercase;
+   letter-spacing: 1px;
+   font-weight: bold;
+   vertical-align: top;
 }
