@@ -17,10 +17,6 @@ var _isRunning;
 var nozzle = 0;
 var R_direction = true;
 
-var bottom = centerY+100;
-var left = centerX-100;
-var right = centerX+100
-
 window.onload = function initialize() {
 
 	for (var i = 0; i < MAX_PARTICLES; i++) {
@@ -36,18 +32,18 @@ window.onload = function initialize() {
 
 function start() {
 	_prev_t = Date.now();
-   _cur_t  = Date.now();
-   _isRunning = true;
+  _cur_t  = Date.now();
+  _isRunning = true;
 }
 
 function step() {
-   _cur_t  = Date.now();
-   var elapsed  = (_cur_t - _prev_t) / 1000.0;
-   _prev_t = _cur_t;
-   if ( !_isRunning ) elapsed = 0.0;
+  _cur_t  = Date.now();
+  var elapsed  = (_cur_t - _prev_t) / 1000.0;
+  _prev_t = _cur_t;
+  if ( !_isRunning ) elapsed = 0.0;
 
 	createParticles();
-   updateParticles(elapsed);
+  updateParticles(elapsed);
 
 	requestAnimationFrame(step);
 }
@@ -140,21 +136,21 @@ function checkCollisionBottle() {
    for (var i = 0; i < index; i++) {
     
       // bottom
-      if (particles[i].pos.y < -500) {
-         particles[i].pos.y = -500;
+      if (particles[i].pos.y < -down) {
+         particles[i].pos.y = -down;
          particles[i].vel = { x: 0, y: 0};
          accel[i] = 0;
       }
 
       // right
-      if (particles[i].pos.x > 50) {
-         particles[i].pos.x = 50;
+      if (particles[i].pos.x > width/2) {
+         particles[i].pos.x = width/2;
          particles[i].vel.x = 0;
       }
 
       // left
-      if (particles[i].pos.x < -50) {
-         particles[i].pos.x = -50;
+      if (particles[i].pos.x < -width/2) {
+         particles[i].pos.x = -width/2;
          particles[i].vel.x = 0;
       }
 
@@ -206,12 +202,11 @@ function updateParticles(delta_t) {
    ctx.strokeStyle = '#000000';
    ctx.lineWidth = 3;
    // ctx.strokeRect(centerX-100, centerY-200, 200, 300);
-
    ctx.beginPath();
-   ctx.moveTo(95, 200);
-   ctx.lineTo(95, 505);
-   ctx.lineTo(205, 505);
-   ctx.lineTo(205, 200);
+   ctx.moveTo(centerX - (width/2 + 5), up);
+   ctx.lineTo(centerX - (width/2 + 5), down + 5);
+   ctx.lineTo(centerX + (width/2 + 5), down + 5);
+   ctx.lineTo(centerX + (width/2 + 5), up);
    ctx.stroke();
 
 }

@@ -5,6 +5,7 @@ var source;
 var processor;
 var analyser;
 var gain;
+var duration;
 var isPlaying = false; // conditional to track whether audio is playing
 var hist = []; // histogram for final output
 // color palette
@@ -118,6 +119,7 @@ function newSong(undecoded) {
     context.decodeAudioData(undecoded, function (buffer) {
         // create nodes
         // source
+        duration = buffer.duration;
         source = context.createBufferSource();
         source.buffer = buffer;
         // js event processor
