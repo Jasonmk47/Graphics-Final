@@ -76,6 +76,7 @@ var colors = [ // every color is repeated (32 => 64)
 ];
 var currentColor;
 var url = "../audio/sandstorm.mp3"; // default
+var chart = $("#hist");
 
 // preloaded file dropdown onchange
 function dropdownChange(value) {
@@ -157,6 +158,7 @@ function newSong(undecoded) {
 
         // function for when source finishes playing
         source.onended = function() {
+            generateHistogram();
             console.log(hist); // prints histogram when finished
         };
     });
@@ -216,3 +218,47 @@ $('#pause_resume').click(function () {
     if (isPlaying) pauseAudio();
     else resumeAudio();
 });
+
+function generateHistogram() {
+    var bins = []
+    for (var i = 0; i < hist.length; i++) {
+        bins[i] = i + 1;
+    }
+
+    // histogram
+    var output = new Chart(chart, {
+        type: 'bar',
+        data: {
+            labels: bins,
+            datasets: [{
+                data: hist,
+                backgroundColor: colors,
+            }]
+        },
+        options: {
+            legend: {
+                display: false,
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        display: false
+                    },
+                    gridLines: {
+                        // display: false,
+                        color: "rgba(0, 0, 0, .05)",
+                    },
+                }],
+                yAxes: [{
+                    ticks: {
+                        display: false
+                    },
+                    gridLines: {
+                        // display: false,
+                        color: "rgba(0, 0, 0, .05)",
+                    },
+                }]
+            }
+        }
+    });
+}
