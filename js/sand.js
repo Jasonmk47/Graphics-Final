@@ -214,6 +214,9 @@ function updateParticles(delta_t) {
    ctx.lineTo(centerX + (width/2 + 5), up);
    ctx.stroke();
 
+   ctx.globalAlpha = 0.2;
+   ctx.fillRect(centerX - (width/2 + 5),up,width+10,down-up+5);
+   ctx.globalAlpha = 1.0;
 }
 
 $('#clear_particles').click(function clearParticles() {

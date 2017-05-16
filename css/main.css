@@ -5,7 +5,7 @@ html, body {
 
 #main_div {
    text-align: center;
-   font-family: Lato;
+   font-family: 'Lato';
    float: left;
    width: 40%;
    position: relative;
