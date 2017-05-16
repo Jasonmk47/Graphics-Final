@@ -232,6 +232,8 @@ $('#pause_resume').click(function () {
 function generateHistogram() {
     // show title when ready
     $("#chart_title").text("Frequency Histogram");
+    $("#chart_title").show();
+    $("#hist").show();
 
     // bins for x-axis
     var bins = []
