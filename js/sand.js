@@ -13,6 +13,9 @@ var _prev_t;
 var _cur_t;
 var _isRunning;
 
+var nozzle = 0;
+var R_direction = true;
+
 var bottom = centerY+100;
 var left = centerX-100;
 var right = centerX+100
@@ -22,7 +25,7 @@ window.onload = function initialize() {
 	for (var i = 0; i < MAX_PARTICLES; i++) {
 		alive[i] = false;
 		particles[i] = null;
-      accel[i] = 1;
+    accel[i] = 1;
 	}
 
 //Should make a button for this
@@ -67,11 +70,16 @@ function createParticles() {
 		for (var i = 0; i < PARTICLES_PER_STEP; i++) {
 			if (Math.random() < .1) {  //With half probability 
 				particles[index++] = {
-					pos: { x: Math.random() * 20 - 10, y: 0 },
+					pos: { x: nozzle + Math.random() * 10 - 5, y: 0 },
 					vel: { x: Math.random() * 2 - 1, y: -100 },
 					color: currentColor ? currentColor : "#FFF",
                movement: 10
 				};
+
+        //To move back and forth
+        if (nozzle === -45 || nozzle === 45) R_direction = !R_direction;
+        if (R_direction) nozzle+=5;
+        else nozzle-=5;
 			}
 		}
 	}

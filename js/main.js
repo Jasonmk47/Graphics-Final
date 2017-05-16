@@ -7,6 +7,3 @@ canvas.height = document.body.clientHeight;
 var ctx = canvas.getContext('2d');
 var centerX = canvas.width / 2;
 var centerY = canvas.height / 2;
-
-var particles = [];
-var maxParticles = [];
