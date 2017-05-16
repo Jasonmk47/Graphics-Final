@@ -1,5 +1,6 @@
 var MAX_PARTICLES = 2000;
-var PARTICLES_PER_STEP = 1;
+var MAX_PARTICLES_PER_STEP = 1;
+var RATIO = 0.1;
 var GRAVITY = -9.81 * 2;
 var DRAG = 0.99;
 var MIN_DIST = 6 // min distance between particles before collision
@@ -67,8 +68,8 @@ function pause() {
 function createParticles() {
 
 	if (isPlaying && currentColor) {
-		for (var i = 0; i < PARTICLES_PER_STEP; i++) {
-			if (Math.random() < .1) {  //With half probability 
+		for (var i = 0; i < MAX_PARTICLES_PER_STEP; i++) {
+			if (Math.random() < RATIO) {
 				particles[index++] = {
 					pos: { x: nozzle + Math.random() * 10 - 5, y: 0 },
 					vel: { x: Math.random() * 2 - 1, y: -100 },
@@ -193,6 +194,10 @@ function updateParticles(delta_t) {
 	updateParticlesVel(delta_t);
 
    checkCollisions(delta_t);
+
+  //Draw background
+  ctx.fillStyle = "#EDC9AF";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	//redraw
 	drawSand(particles);
