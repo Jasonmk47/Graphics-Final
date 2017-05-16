@@ -204,6 +204,8 @@ function pauseAudio() {
     context.suspend();
     // source.disconnect();
     isPlaying = false;
+    // histogram so far
+    generateHistogram();
 }
 
 // resume helper
@@ -219,7 +221,17 @@ $('#pause_resume').click(function () {
     else resumeAudio();
 });
 
+// hide histogram title on load
+// $(document).ready(function () {
+//     $("#chart_title").hide();
+// });
+
+// generate histogram
 function generateHistogram() {
+    // show title when ready
+    $("#chart_title").text("Frequency Histogram");
+
+    // bins for x-axis
     var bins = []
     for (var i = 0; i < hist.length; i++) {
         bins[i] = i + 1;

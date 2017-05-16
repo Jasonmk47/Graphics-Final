@@ -32,17 +32,19 @@
             <br>
             <span class="ui_label">Song: </span>
             <select id="songs" name="songs" onchange="dropdownChange(this.value);">
-                <option value='../audio/sandstorm.mp3'>Sandstorm</option>
-                <option value='../audio/weewoo.mp3'>K-Pop (Wee Woo)</option>
-                <option value='../audio/humble.mp3'>Humble</option>
-                <option value='../audio/chopin.mp3'>Chopin (Prelude #4)</option>
-                <option value='../audio/paganini.mp3'>Paganini (Caprice #24)</option>
-                <option value='../audio/bohemianrhapsody.mp3'>Bohemian Rhapsody</option>
+                <option value='../audio/sandstorm.mp3'>Darude - Sandstorm</option>
+                <option value='../audio/miley.mp3'>Pop (Miley Cyrus - Party in the U.S.A.)</option>
+                <option value='../audio/police.mp3'>Rock (Message in a Bottle - The Police)</option>
+                <option value='../audio/animals.mp3'>Electronic (Martin Garrix - Animals)</option>
+                <option value='../audio/famous.mp3'>Rap (Kanye West - Famous)</option>
+                <option value='../audio/chopin.mp3'>Piano (Chopin - Prelude #4)</option>
+                <option value='../audio/paganini.mp3'>Violin (Paganini - Caprice #24)</option>
+                <option value='../audio/bohemianrhapsody.mp3'>Queen - Bohemian Rhapsody</option>
                 <option value='../audio/butt.wav'>Voice Sample</option>
             </select>
         </div>
-        <div id="main_bottom">
-            <h2>Frequency Histogram</h2>
+        <div id="main_bottom" >
+            <h2 id="chart_title"></h2>
             <canvas id="hist"></canvas>
         </div>
     </div>
