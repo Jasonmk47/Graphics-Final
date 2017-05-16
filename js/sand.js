@@ -204,6 +204,8 @@ function updateParticles(delta_t) {
 
 $('#clear_particles').click(function clearParticles() {
   index = 0;
+  $("#chart_title").hide();
+  $("#hist").hide();
 });
 
 
