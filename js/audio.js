@@ -130,6 +130,8 @@ function newSong(undecoded) {
         analyser.fftSize = 128; // constant, needs to be power of 2
         // gain
         gain = context.createGain();
+        // make sure gain is where is was set previously
+        gainChange($("#gain").val());
 
         // populate/reset histogram
         for (var i = 0; i < analyser.fftSize / 2; i++) {
