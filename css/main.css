@@ -39,3 +39,7 @@ html, body {
 .names {
    font-size: 10px;
 }
+
+#canvas {
+   margin-left: 25%;
+}

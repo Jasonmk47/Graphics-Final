@@ -18,12 +18,6 @@ var left = centerX-100;
 var right = centerX+100
 
 window.onload = function initialize() {
-	// Draw the cup
-   	ctx.strokeStyle = '#000000';
-    // ctx.fillRect(centerX-50, centerY, 100, 100);
-    // ctx.clearRect(centerX-50, centerY, 100, 100);
-    ctx.lineWidth = 3;
-    ctx.strokeRect(centerX-100, centerY-200, 200, 300);
 
 	for (var i = 0; i < MAX_PARTICLES; i++) {
 		alive[i] = false;
@@ -73,7 +67,7 @@ function createParticles() {
 		for (var i = 0; i < PARTICLES_PER_STEP; i++) {
 			if (Math.random() < .1) {  //With half probability 
 				particles[index++] = {
-					pos: { x: Math.random() * 20, y: 0 },
+					pos: { x: Math.random() * 20 - 10, y: 0 },
 					vel: { x: Math.random() * 2 - 1, y: -100 },
 					color: currentColor ? currentColor : "#FFF",
                movement: 10
@@ -101,7 +95,7 @@ function updateParticlesVel(delta_t) {
       particles[i].vel.x *= DRAG;
 		particles[i].vel.y += GRAVITY * delta_t * accel[i];
 
-      if (particles[i].movement < 0.1) { particles[i].vel = { x: 0, y: 0 }; particles[i].movement = 0}
+      if (particles[i].movement < 0.07) { particles[i].vel = { x: 0, y: 0 }; particles[i].movement = 0}
       else particles[i].movement *= 0.9;
 	}
 }
@@ -124,7 +118,7 @@ function checkCollisionSand(delta_t) {
             particles[j].pos.y -= particles[j].vel.y * delta_t;
 
             if (particles[j].vel.x != 0) particles[j].vel.x = -dx * 3;
-            particles[j].vel.y *= -0.1;
+            if (accel[j] != 0) particles[j].vel.y *= -0.1;
 
           }
       }
@@ -137,21 +131,21 @@ function checkCollisionBottle() {
    for (var i = 0; i < index; i++) {
     
       // bottom
-      if (particles[i].pos.y < -200) {
-         particles[i].pos.y = -200;
+      if (particles[i].pos.y < -500) {
+         particles[i].pos.y = -500;
          particles[i].vel = { x: 0, y: 0};
          accel[i] = 0;
       }
 
       // right
-      if (particles[i].pos.x > 100) {
-         particles[i].pos.x = 100;
+      if (particles[i].pos.x > 50) {
+         particles[i].pos.x = 50;
          particles[i].vel.x = 0;
       }
 
       // left
-      if (particles[i].pos.x < -100) {
-         particles[i].pos.x = -100;
+      if (particles[i].pos.x < -50) {
+         particles[i].pos.x = -50;
          particles[i].vel.x = 0;
       }
 
@@ -169,7 +163,7 @@ function checkCollisions(delta_t) {
 function drawSandParticle(x, y, color) {
 
 	var x_offset = 150;
-	var y_offset = 250;
+	var y_offset = 0;
 
     ctx.beginPath();
     ctx.arc(x + x_offset, -y + y_offset, 3, 0, 2 * Math.PI, false);
@@ -188,12 +182,25 @@ function updateParticles(delta_t) {
 
    ctx.clearRect(0, 0, canvas.width, canvas.height);
 	updateParticlesPos(delta_t);
-	  updateParticlesVel(delta_t);
+	updateParticlesVel(delta_t);
 
    checkCollisions(delta_t);
 
 	//redraw
 	drawSand(particles);
+
+   // Draw the cup
+   ctx.strokeStyle = '#000000';
+   ctx.lineWidth = 3;
+   // ctx.strokeRect(centerX-100, centerY-200, 200, 300);
+
+   ctx.beginPath();
+   ctx.moveTo(95, 200);
+   ctx.lineTo(95, 505);
+   ctx.lineTo(205, 505);
+   ctx.lineTo(205, 200);
+   ctx.stroke();
+
 }
 
 $('#clear_particles').click(function clearParticles() {
