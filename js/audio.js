@@ -89,7 +89,7 @@ function dropdownChange(value) {
 // start default chain
 requester();
 
-// file reader
+// file reader (http://stackoverflow.com/a/30112800/6552018)
 audio_file.onchange = function() {
   var file = this.files[0];
   var reader = new FileReader();

@@ -15,6 +15,7 @@ var _cur_t;
 var _isRunning;
 
 var nozzle = 0;
+var nozzleStep = 0; // how much the nozzle moves per time step
 var R_direction = true;
 
 window.onload = function initialize() {
@@ -60,6 +61,10 @@ function pause() {
     }
 }
 
+function nozzleUpdate(value) {
+    nozzleStep = value * 20;
+}
+
 //Called every time step while a song is playing
 function createParticles() {
 
@@ -74,9 +79,9 @@ function createParticles() {
 				};
 
         //To move back and forth
-        if (nozzle === -45 || nozzle === 45) R_direction = !R_direction;
-        if (R_direction) nozzle+=5;
-        else nozzle-=5;
+        if (nozzle <= -45 || nozzle >= 45) R_direction = !R_direction;
+        if (R_direction) nozzle+=nozzleStep;
+        else nozzle-=nozzleStep;
 			}
 		}
 	}
