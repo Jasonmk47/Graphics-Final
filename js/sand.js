@@ -1,4 +1,4 @@
-var MAX_PARTICLES = 1000;
+var MAX_PARTICLES = 2000;
 var PARTICLES_PER_STEP = 1;
 var GRAVITY = -9.81 * 2;
 var DRAG = 0.99;
@@ -69,7 +69,7 @@ function pause() {
 //Called every time step while a song is playing
 function createParticles() {
 
-	if (isPlaying) {
+	if (isPlaying && currentColor) {
 		for (var i = 0; i < PARTICLES_PER_STEP; i++) {
 			if (Math.random() < .1) {  //With half probability 
 				particles[index++] = {
@@ -135,7 +135,7 @@ function checkCollisionSand(delta_t) {
 function checkCollisionBottle() {
 
    for (var i = 0; i < index; i++) {
-      
+    
       // bottom
       if (particles[i].pos.y < -200) {
          particles[i].pos.y = -200;
@@ -196,6 +196,9 @@ function updateParticles(delta_t) {
 	drawSand(particles);
 }
 
+$('#clear_particles').click(function clearParticles() {
+  index = 0;
+});
 
 
 
