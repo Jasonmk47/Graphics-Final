@@ -1,6 +1,6 @@
 // Get the canvas element
 var canvas = document.getElementById('canvas');
-
+ 
 // canvas.width = document.body.clientWidth;
 canvas.height = document.body.clientHeight;
 
