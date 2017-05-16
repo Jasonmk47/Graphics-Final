@@ -76,7 +76,7 @@ var colors = [ // every color is repeated (32 => 64)
     '#e1e885'
 ];
 var currentColor;
-var url = "../audio/sandstorm.mp3"; // default
+var url = "audio/sandstorm.mp3"; // default
 var chart = $("#hist");
 
 // preloaded file dropdown onchange
