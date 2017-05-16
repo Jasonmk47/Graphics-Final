@@ -3,7 +3,7 @@
 
 <head>
     <title> COS426 Final Project &mdash; Sandstorm.mp3</title>
-    <link href="{{ site.baseurl }}/css/main.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/main.css" type="text/css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js"></script>
@@ -18,15 +18,15 @@
             <span class="names">Savannah Du // Jason Kim // Michael Zhang</span></h1>
             <span class="ui_label">Choose a song</span><br>
             <select id="songs" name="songs" onchange="dropdownChange(this.value);">
-                <option value='{{ site.baseurl }}/audio/sandstorm.mp3'>Darude - Sandstorm (3:46)</option>
-                <option value='{{ site.baseurl }}/audio/miley.mp3'>Pop (Miley Cyrus - Party in the U.S.A., 3:22)</option>
-                <option value='{{ site.baseurl }}/audio/police.mp3'>Rock (Message in a Bottle - The Police, 4:53)</option>
-                <option value='{{ site.baseurl }}/audio/animals.mp3'>Electronic (Martin Garrix - Animals, 5:04)</option>
-                <option value='{{ site.baseurl }}/audio/famous.mp3'>Rap (Kanye West - Famous, 3:16)</option>
-                <option value='{{ site.baseurl }}/audio/chopin.mp3'>Piano (Chopin - Prelude #4, 1:40)</option>
-                <option value='{{ site.baseurl }}/audio/paganini.mp3'>Violin (Paganini - Caprice #24, 4:51)</option>
-                <option value='{{ site.baseurl }}/audio/whitenoise.mp3'>White Noise (1:00)</option>
-                <option value='{{ site.baseurl }}/audio/butt.wav'>Voice Sample (0:01)</option>
+                <option value='../audio/sandstorm.mp3'>Darude - Sandstorm (3:46)</option>
+                <option value='../audio/miley.mp3'>Pop (Miley Cyrus - Party in the U.S.A., 3:22)</option>
+                <option value='../audio/police.mp3'>Rock (Message in a Bottle - The Police, 4:53)</option>
+                <option value='../audio/animals.mp3'>Electronic (Martin Garrix - Animals, 5:04)</option>
+                <option value='../audio/famous.mp3'>Rap (Kanye West - Famous, 3:16)</option>
+                <option value='../audio/chopin.mp3'>Piano (Chopin - Prelude #4, 1:40)</option>
+                <option value='../audio/paganini.mp3'>Violin (Paganini - Caprice #24, 4:51)</option>
+                <option value='../audio/whitenoise.mp3'>White Noise (1:00)</option>
+                <option value='../audio/butt.wav'>Voice Sample (0:01)</option>
             </select>
             <br>
             <br>
@@ -54,9 +54,9 @@
         <canvas id="canvas" onload="initializeCanvas"> </canvas>
     </div>
 
-    <script src="{{ site.baseurl }}/js/audio.js"> </script>
-    <script src="{{ site.baseurl }}/js/main.js"> </script>
-    <script src="{{ site.baseurl }}/js/sand.js"> </script>
+    <script src="/js/audio.js"> </script>
+    <script src="/js/main.js"> </script>
+    <script src="/js/sand.js"> </script>
 
 </body>
 </html>
